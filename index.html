@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Covid 19 Tracking App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+      *{
+        padding: 0px;
+        margin: 0px;
+        box-sizing: boborder-box;
+      }
+      body{
+        background-color: lightblue;
+      }
+      h1{
+        border-bottom: 5px solid green;
+        padding-bottom: 3vh;
+        margin-bottom: 2vh;
+      }
+      p{
+        border: 3px solid green;
+        padding 2px;
+        text-align: center;
+        margin: 5vh 0vw;
+        /* display: inline-block; */
+        /* align-items: center */
+      }
+      table,th,tr,td{
+        border: 3px solid green;
+        padding: 10px;
+
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mt-5">Covid Cases Reposted in India</h1>
+      <p>Updated At Date:<span id="date"></span>, Time:<span id="time"></span></p>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Total Cases</th>
+            <th>Total Active Cases</th>
+            <th>Total Deths</th>
+            <th>Total Recovered</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="data">
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      init()
+      function init(){
+        var url = "https://api.covid19api.com/summary"
+        var data=''
+        var date=""
+        var time=""
+        $.get(url,function(data){
+          // data=data.Countries[]
+          // console.log()
+          date = data.Countries[76].Date.split("T")[0]
+          time = data.Countries[76].Date.split("T")[1].split(".")[0]
+
+          detail_time= time.split(":")
+          if(detail_time[0]>=12){
+              var hours = parseInt(time.split(":")[0]) -12;
+              time= hours.toString()+":"+detail_time[1]+":"+detail_time[2] + " PM"
+          } else {
+            time+=" AM"
+          }
+          data=`
+            <td>${data.Countries[76].TotalConfirmed} (+${data.Countries[76].NewConfirmed}) </td>
+            <td>${data.Countries[76].TotalConfirmed-data.Countries[76].TotalDeaths-data.Countries[76].TotalRecovered}</td>
+            <td>${data.Countries[76].TotalDeaths} (+${data.Countries[76].NewDeaths}) </td>
+            <td>${data.Countries[76].TotalRecovered} (+${data.Countries[76].NewRecovered}) </td>
+          `
+
+          $("#data").html(data)
+          $("#date").html(date)
+          $("#time").html(time)
+        })
+      }
+    })
+  </script>
+</html>
