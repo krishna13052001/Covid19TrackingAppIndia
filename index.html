@@ -23,8 +23,6 @@
         padding 2px;
         text-align: center;
         margin: 5vh 0vw;
-        /* display: inline-block; */
-        /* align-items: center */
       }
       table,th,tr,td{
         border: 3px solid green;
@@ -64,8 +62,6 @@
         var date=""
         var time=""
         $.get(url,function(data){
-          // data=data.Countries[]
-          // console.log()
           date = data.Countries[76].Date.split("T")[0]
           time = data.Countries[76].Date.split("T")[1].split(".")[0]
 
